@@ -1,0 +1,34 @@
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="sepa_abweichende_person" value="true" id="sepa_abweichende_person" hx-post="/sepa" hx-target="#sepa" {{ "checked" if form["sepa_abweichende_person"] }}>
+    <label class="form-check-label" for="sepa_abweichende_person">
+        Abweichende kontoinhabende Person
+    </label>
+</div>
+
+{% if form['sepa_abweichende_person'] %}
+<input type="text" placeholder="Kontoinhabende Person" name="konto_person" class="form-control mb-3" />
+<input type="text" placeholder="Anschrift (Straße, Hausnummer, PLZ, Ort)" name="konto_anschrift" class="form-control mb-3" />
+{% else %}
+<input type="text" placeholder="Kontoinhabende Person" name="konto_person" value="{{ form['name'] }} " class="form-control mb-3" disabled />
+<input type="text" placeholder="Anschrift (Straße, Hausnummer, PLZ, Ort)" value="{{ form['anschrift'] }}" name="konto_anschrift" class="form-control mb-3" disabled />
+{% endif %}
+<input type="text" placeholder="Kreditinstitut" name="konto_institut" class="form-control mb-3" />
+<input type="text" placeholder="IBAN" name="konto_iban" class="form-control mb-3" />
+
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="sepa_einwilligung" value="true" id="sepaeinwilligung">
+<label class="form-check-label" for="sepaeinwilligung">
+    Hiermit ermächtige ich den LeineLab e.V. Zahlungen von meinem Konto mittels Lastschrift einzuziehen.
+    Zugleich weise ich mein Kreditinstitut an, die vom LeineLab e.V. auf mein Konto gezogenen Lastschriften
+    einzulösen.
+</label>
+</div>
+<br>
+
+<em>Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten
+    Betrags verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen. Die Behandlung
+    von nicht eingelöste Lastschriften und die damit verbundenen Kosten werden in der Gebührenordnung des
+    LeineLab e.V. geregelt. Sofern nicht anders vereinbart, werden die Mitgliedsbeiträge in einer
+    jährlichen Sammelbuchung eingezogen.</em>

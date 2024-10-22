@@ -1,0 +1,78 @@
+
+<h5>
+Dein Beitrag: <br><span class="badge rounded-pill bg-primary">
+    <span id="beitrag">{{ beitrag }}</span> / Monat
+</span>
+</h5>
+
+<h5>Mitgliedsart:</h5>
+
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="mitgliedschaftsart" value="normal" id="mitgliedschaftsart_normal" checked hx-post="/beitragstuff" hx-target="#beitragstuff" {{ "checked" if form["mitgliedschaftsart"] == "normal" }}>
+    <label class="form-check-label" for="mitgliedschaftsart_normal">
+      Normale Mitgliedschaft
+    </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="mitgliedschaftsart" value="foerder" id="mitgliedschaftsart_foerder" hx-post="/beitragstuff" hx-target="#beitragstuff" {{ "checked" if form["mitgliedschaftsart"] == "foerder" }}>
+    <label class="form-check-label" for="mitgliedschaftsart_foerder">
+      Fördermitgliedschaft (Kein Stimmrecht auf der Mitgliederversammlung, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)
+    </label>
+</div>
+
+{% if form["mitgliedschaftsart"] == "foerder" %}
+<br>
+<label for="customRange2" class="form-label">Monatlicher Förderbeitrag</label>
+<input type="range" class="form-range" min="2.5" max="30" step="2.5" step id="customRange2" hx-post="/beitrag" hx-target="#beitrag" name="foerderbeitrag" value="10" hx-trigger="input">
+
+{% else %}
+
+<div id="beitragsform">
+    <h5>Ermäßigungen:</h5>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="ermaessigt" value="true" id="ermaessigt" hx-post="/beitragstuff" hx-target="#beitragstuff" {{ "checked" if form["ermaessigt"] }}>
+        <label class="form-check-label" for="ermaessigt">
+            Ermäßigter Beitrag
+            {% if not form["ermaessigt"] %}
+            <span class="badge rounded-pill bg-success">
+                {% if form["werkstatt"] %}
+                    -18,00€
+                {% else %}
+                    -7,50€
+                {% endif %}
+            </span>
+            {% endif %}
+            - Für Schülerinnen/Schüler, Studierende, Auszubildende, Empfängerinnen/Empfänger
+            von Sozialgeld oder Arbeitslosengeld II einschließlich Leistungen nach § 22 ohne
+            Zuschläge oder nach § 24 des Zweiten Buchs des Sozialgesetzbuchs (SGB II), sowie
+            Empfängerinnen/Empfänger von Ausbildungsförderung nach dem
+            Bundesausbildungsförderungsgesetz (BAföG)
+            {% if form["ermaessigt"] %}
+            {% endif %}
+        </label>
+    </div>
+    {% if form["ermaessigt"] %}
+    <div class="alert alert-info" role="alert">
+        Hinweis: Falls dir der angezeigte Beitrag immer noch zu hoch ist, sprich uns als Vorstand gerne
+    an. Wir haben nach der Beitragsordnung auch die Möglichkeit, individuell Vergünstigungen zu geben.
+      </div>
+    {% endif %}
+    <h5>Zusatzfeatures:</h5>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="werkstatt" value="true" id="werkstatt" hx-post="/beitragstuff" hx-target="#beitragstuff" {{ "checked" if form["werkstatt"] }}>
+        <label class="form-check-label" for="werkstatt">
+            Werkstattnutzung
+            {% if not form["werkstatt"] %}
+                <span class="badge rounded-pill bg-info text-dark">
+                    {% if form["ermaessigt"] %}
+                        +7,50 €
+                    {% else %}
+                        +18,00 €
+                    {% endif %}
+                </span>
+            {% endif %}
+        </label>
+    </div>
+</div>
+
+{% endif %}
