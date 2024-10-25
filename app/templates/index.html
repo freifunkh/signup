@@ -50,22 +50,34 @@
                 </div>
                 {{ render_field(form.email) }}
 
-                <div id="x2" hx-post="" hx-trigger="change{{ ',load' | safe if "HX-Request" not in request.headers }}">
+                <div id="x2" {{ 'hx-post="" hx-trigger="load"' | safe if "HX-Request" not in request.headers }}>
                     <h3 style="padding-top:30px" id="beitrag" hx-post="" hx-trigger="input from:#x2">
                         Dein Beitrag: <span class="badge rounded-pill bg-primary">
                         <span id="beitrag">{{ beitrag }}</span> € / Monat</span>
                     </h3>
                     {% if request.form['x-ermaessigt'] %}
-                    <div class="alert alert-info" role="alert">
-                        Hinweis: Falls du den angezeigten Beitrag aus finanziellen Gründen trotz Ermäßigung immer
-                        noch nicht aufbringen kannst, sprich uns als Vorstand gerne an. Wir haben
-                        nach der Beitragsordnung die Möglichkeit, weitere individuelle Vergünstigungen
-                        für Sonderfälle zu vergeben.
-                    </div>
+                        <div class="alert alert-info" role="alert">
+                            Hinweis: Falls du den angezeigten Beitrag aus finanziellen Gründen trotz Ermäßigung immer
+                            noch nicht aufbringen kannst, sprich uns als Vorstand gerne an. Wir haben
+                            nach der Beitragsordnung die Möglichkeit, weitere individuelle Vergünstigungen
+                            für Sonderfälle zu vergeben.
+                        </div>
                     {% endif %}
 
-                    {{ render_field(form.mitgliedsart, False) }}
-                    {{ render_field(form.x, False, False) }}
+                    <div id="mitgliedsart-outer">
+                        {{ render_field(form.mitgliedsart, False) }}
+                    </div>
+
+                    <div id="mitgliedsart-dependent" hx-post="" hx-trigger="change from:#mitgliedsart-outer">
+                        {% if request.form['mitgliedsart'] == "Fördermitgliedschaft (Kein Stimmrecht auf der Mitgliederversammlung, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)" %}
+                            {{ render_field(form.x.foerderbeitrag, False, False) }}
+                        {% else %}
+                            <div id="ermaessigt-werkstatt" hx-post="" hx-trigger="change">
+                                {{ render_field(form.x.ermaessigt, False, False) }}
+                                {{ render_field(form.x.werkstatt, False, False) }}
+                            </div>
+                        {% endif %}
+                    </div>
 
                 </div>
 
