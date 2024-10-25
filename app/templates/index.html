@@ -17,7 +17,10 @@
 
 <body style="display:flex; justify-content : center;">
     <div style="max-width: 600px;">
-        <h1>LeineLab e.V. - Mitgliedsantrag</h1>
+        <div style="text-align: center;">
+        <img src="{{ url_for('static', filename='leinelab0.png')}}" width="300" alt="LeineLab Logo - An den Glider aus Game of Life angelehntes L auf regenbogenfarbenem Hintergrund.">
+        </div>
+        <h1 style="margin-top: 30px;">LeineLab e.V. - Mitgliedsantrag</h1>
             {% from "form.html" import render_field with context %}
 
 
