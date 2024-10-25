@@ -51,7 +51,7 @@
                 {{ render_field(form.email) }}
 
                 <div id="x2" {{ 'hx-post="" hx-trigger="load"' | safe if "HX-Request" not in request.headers }}>
-                    <h3 style="padding-top:30px" id="beitrag" hx-post="" hx-trigger="input from:#x2">
+                    <h3 style="padding-top:30px" id="beitrag" hx-post="" hx-trigger="input from:#x2 queue:last,change from:#x2 queue:last">
                         Dein Beitrag: <span class="badge rounded-pill bg-primary">
                         <span id="beitrag">{{ beitrag }}</span> € / Monat</span>
                     </h3>
