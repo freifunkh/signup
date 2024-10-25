@@ -37,13 +37,13 @@ class SEPABase(FlaskForm):
 
 class SEPASameInhabende(SEPABase):
     kontoinhabende = StringField('Kontoinhabende Person', render_kw={"disabled": ""})
-    kontoinhabende_addresse = StringField('Addresse (Straße Hausnummer, PLZ Stadt)', render_kw={"disabled": ""})
+    kontoinhabende_addresse = StringField('Adresse (Straße Hausnummer, PLZ Stadt)', render_kw={"disabled": ""})
 
 class SEPAAbweichendeInhabende(SEPABase):
     kontoinhabende = StringField('Kontoinhabende Person(en)', validators=[
         DataRequired("Bitte gebe den Namen der kontoinhabenden Person(en) an.")
     ])
-    kontoinhabende_addresse = StringField('Addresse (Straße Hausnummer, PLZ Stadt)', [
+    kontoinhabende_addresse = StringField('Adresse (Straße Hausnummer, PLZ Stadt)', [
         DataRequired(message="Bitte gebe deine Adresse ein."),
         Regexp(r'^[\w\s.-]+\s\d{1,4}[a-z]*,\s\d{5}\s[\w\s.-]+$', message="Bitte geben Sie eine gültige Adresse im Format 'Straße Hausnummer, PLZ Stadt' ein.")
     ])
@@ -55,13 +55,13 @@ class BaseForm(FlaskForm):
     name = StringField('Name', validators=[
         DataRequired("Bitte gebe deinen Namen ein.")
     ])
-    full_address = StringField('Addresse (Straße Hausnummer, PLZ Stadt)', [
+    full_address = StringField('Adresse (Straße Hausnummer, PLZ Stadt)', [
         DataRequired(message="Bitte gebe deine Adresse ein."),
         Regexp(r'^[\w\s.-]+\s\d{1,4}[a-z]*,\s\d{5}\s[\w\s.-]+$', message="Bitte geben Sie eine gültige Adresse im Format 'Straße Hausnummer, PLZ Stadt' ein.")
     ])
     email = StringField('Email', [
         validators.Length(min=6, message='Ein bisschen kurz für eine EMail-Adresse?'),
-        validators.Email(message='Keine valide EMail-Addresse.')
+        validators.Email(message='Keine valide EMail-Adresse.')
     ])
     mitgliedsart = RadioField('Mitgliedsart', default="Normale Mitgliedschaft", choices=["Normale Mitgliedschaft", "Fördermitgliedschaft (Kein Stimmrecht auf der Mitgliederversammlung, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)"])
 
