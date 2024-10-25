@@ -18,11 +18,11 @@ def iban_validator(form, field):
 parser = etree.HTMLParser(encoding="utf-8")
 
 class NormalesMitgliedForm(FlaskForm):
-    ermaessigt = BooleanField("""Ermäßigter Beitrag %TAG% - Für Schülerinnen/Schüler, Studierende,
-            Auszubildende, Empfängerinnen/Empfänger
+    ermaessigt = BooleanField("""Ermäßigter Beitrag %TAG% - Für Schüler*innen, Studierende,
+            Auszubildende, Empfänger*innen
             von Sozial- oder Bürgergeld einschließlich Leistungen nach § 22 ohne
             Zuschläge oder nach § 24 des Zweiten Buchs des Sozialgesetzbuchs (SGB II), sowie
-            Empfängerinnen/Empfänger von Ausbildungsförderung nach dem
+            Empfänger*innen von Ausbildungsförderung nach dem
             Bundesausbildungsförderungsgesetz (BAföG)""")
     werkstatt = BooleanField("Werkstattnutzung %TAG%")
 
