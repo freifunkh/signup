@@ -1,9 +1,7 @@
-{% set encoding = "multipart/form-data" if form.__iter__() | selectattr("type", "in", ["FileField","MultipleFileField"]) | list else "application/x-www-form-urlencoded" %}
-
-{% macro render_field(field, has_check=True) -%}
+{% macro render_field(field, has_check=True, update_on_changed=True) -%}
 
 {% if has_check %}
-{% set valid_css = " is-invalid" if field.errors else " is-valid" if field.raw_data else ""%}
+    {% set valid_css = " is-invalid" if field.errors else " is-valid" if field.raw_data else ""%}
 {% endif %}
 
 {% if field.type == "SubmitField"%}
@@ -11,16 +9,23 @@
     {{field(class="btn btn-sm btn-success")}}
     <span id="spinner" class="htmx-indicator spinner-border spinner-border-sm text-secondary"></span>
 
-    {% elif field.type in ["CSRFTokenField","HiddenField"]%}
+{% elif field.type in ["CSRFTokenField","HiddenField"]%}
 
     {{field()}}
 
-    {% elif field.type == "BooleanField"%}
+{% elif field.type == "BooleanField"%}
+
+    {% set extra = {} %}
+
+    {% if update_on_changed %}
+        {% set extra = dict(extra.items(), **{
+            "hx-post": True,
+            "hx-target": "closest div"
+        })  %}
+    {% endif %}
 
     {% if field.value %}
-        {% set extra = {"checked": "checked", "hx-post":True, "hx-target":"closest div"} %}
-    {% else %}
-        {% set extra = {"hx-post":True, "hx-target":"closest div"} %}
+        {% set extra = dict(extra.items(), checked="checked")  %}
     {% endif %}
 
     <div class="form-check mb-3" id="{{field.id}}-container">
@@ -47,30 +52,39 @@
     </fieldset>
 {% elif field.type == "FormField" %}
 
-<div id="{{field.name}}">
-    {% for subfield in field %}
+    <div id="{{field.name}}">
+        {% for subfield in field %}
 
-        {{ render_field(subfield, has_check) }}
+            {{ render_field(subfield, has_check, update_on_changed) }}
 
-    {% endfor %}
+        {% endfor %}
 
-</div>
+    </div>
 
 {% else %}
+
+    {% set extra = {} %}
+
+    {% if update_on_changed %}
+        {% set extra = dict(extra.items(), **{
+            "hx-post": True,
+            "hx-target": "closest div"
+        })  %}
+    {% endif %}
 
     <div class="mb-3" id="{{field.id}}-container">
         {{field.label(class="form-label")}}
 
         {% if field.type in ["SelectField", "SelectMultipleField"]%}
-        {% set css = "form-select"%}
+            {% set css = "form-select"%}
         {% elif field.type in ["IntegerRangeField", "DecimalRangeField"]%}
-        {% set css = "form-range"%}
+            {% set css = "form-range"%}
         {% elif field.type == "ColorField"%}
-        {% set css = "form-control form-control-color"%}
+            {% set css = "form-control form-control-color"%}
         {% else %}
-        {% set css = "form-control"%}
+            {% set css = "form-control"%}
         {% endif %}
-        {{field(**{"class":css~valid_css, "hx-target":"closest div", "hx-post":true})}}
+        {{field(class=css~valid_css, **extra)}}
 
         {% include "errors.html"%}
         {% include "description.html"%}
