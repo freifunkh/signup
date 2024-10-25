@@ -1,10 +1,11 @@
-from app import app
+from app import app, mail
 from lxml import etree, html
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect, make_response,after_this_request
 from flask_wtf import FlaskForm
 from wtforms import StringField, validators, RadioField, FormField, BooleanField, DecimalRangeField
 from wtforms.validators import DataRequired, Regexp, ValidationError, Length, InputRequired
 from schwifty import IBAN
+from flask_mail import Message, Mail
 
 # Custom IBAN validator
 def iban_validator(form, field):
@@ -15,21 +16,6 @@ def iban_validator(form, field):
         raise ValidationError('Ungültige IBAN.')
 
 parser = etree.HTMLParser(encoding="utf-8")
-
-@app.after_request
-def after_request(response):
-    if "HX-Request" in request.headers:
-        data = response.get_data()
-        tree = html.fromstring(data, parser=parser)
-        target = request.headers["HX-Target"]
-        print(target)
-        print(data)
-        target_elem = tree.xpath(f"//*[@id='{target}']")[0]
-        oob_elems = tree.xpath("//*[@hx-swap-oob]")
-        elems = [target_elem] + oob_elems
-        response.data = "".join([html.tostring(elem, encoding=str) for elem in elems])
-
-    return response
 
 class NormalesMitgliedForm(FlaskForm):
     ermaessigt = BooleanField("""Ermäßigter Beitrag %TAG% - Für Schülerinnen/Schüler, Studierende,
@@ -137,9 +123,6 @@ def home():
         form.sepa.kontoinhabende.process_data(form.data['name'])
         form.sepa.kontoinhabende_addresse.process_data(form.data['full_address'])
 
-    if form.validate_on_submit():
-        if "HX-Request" not in request.headers:
-            return redirect('/success')
 
     foerderbeitrag = None
     werkstatt = request.form.get("x-werkstatt")
@@ -150,9 +133,41 @@ def home():
 
     beitrag = calc_beitrag(ermaessigt, werkstatt, foerderbeitrag)
 
+    if form.validate_on_submit() and "HX-Target" in request.headers and request.headers['HX-Target'] == 'form':
+        msg = Message(subject=f'Neue Mitgliedsanfrage von {form.data["name"]}!', sender='root@leinelab.org', recipients=['vorstand@leinelab.org'])
+        msg.body = render_template("mail.txt", form=form, beitrag=beitrag)
+        print(msg)
+        mail.send(msg)
+        print("redirect")
+
+        @after_this_request
+        def add_header(response):
+            response.headers['HX-Redirect'] = "/success"
+            return response
+
+        return "Success"
+
+    @after_this_request
+    def add_header(response):
+        if "HX-Request" in request.headers and response.status_code == 200:
+            data = response.get_data()
+            tree = html.fromstring(data, parser=parser)
+            target = request.headers["HX-Target"]
+            target_elems = tree.xpath(f"//*[@id='{target}']")
+            if len(target_elems) > 0:
+                oob_elems = tree.xpath("//*[@hx-swap-oob]")
+                elems = [target_elems[0]] + oob_elems
+                response.data = "".join([html.tostring(elem, encoding=str) for elem in elems])
+
+        return response
+
     return render_template("index.html", form=form, beitrag=beitrag)
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    response = make_response('<div class="alert alert-danger" role="alert">ERROR!!<br><br>' + str(e) + "</div>", 200)
+    return response
 
-@app.route("/submit", methods=["POST"])
-def submit():
-    return NotImplemented
+@app.route("/success", methods=["GET"])
+def sucess():
+    return render_template("success.html")

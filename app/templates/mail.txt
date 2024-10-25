@@ -1,0 +1,22 @@
+Hallo lieber Vorstand,
+
+{{ request.form['name'] }} möchte Mitglied werden.
+
+Hier sind die Daten:
+
+Name: {{ request.form['name'] }}
+Addresse: {{ request.form['full_address'] }}
+EMail: {{ request.form['email'] }}
+
+Beitrag: {{ beitrag }} €/Monat
+Mitgliedschaftsart: {{ request.form['mitgliedsart'] }}
+Ermäßigt: {{ "Ja" if request.form['x-ermaessigt'] else "Nein" }}
+Werkstatt: {{ "Ja" if request.form['x-werkstatt'] else "Nein" }}
+
+Kontoinhabende Person(en): {{ request.form['sepa-kontoinhabende'] }}
+Addresse der kontoinhabende(n) Person(en): {{ request.form['sepa-kontoinhabende_addresse'] }}
+Kreditinstitut: {{ request.form['sepa-kreditinstitut'] }}
+IBAN: {{ request.form['sepa-iban'] }}
+
+Viele Grüße und Tüdelü
+Euer Mitgliedsformular

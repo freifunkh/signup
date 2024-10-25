@@ -1,0 +1,9 @@
+#!/usr/bin/python
+
+class Config(object):
+    MAIL_SERVER = 'leineserver.leinelab.org'
+    MAIL_PORT = 587
+    MAIL_USERNAME = 'vorstand@leinelab.org'
+    MAIL_PASSWORD = 'your_password'
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False

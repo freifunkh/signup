@@ -26,8 +26,8 @@
     <div class="form-check mb-3" id="{{field.id}}-container">
         {{field(class="form-check-input"~valid_css, **extra)}}
         <label class="form-check-label" for="{{field.name}}">{{field.label.text|safe}}</label>
-        {% include "htmx_components_flask/form/errors.html"%}
-        {% include "htmx_components_flask/form/description.html"%}
+        {% include "errors.html"%}
+        {% include "description.html"%}
     </div>
 
 {% elif field.type == "RadioField"%}
@@ -39,8 +39,8 @@
             {{subfield(class="form-check-input"~valid_css, **{"hx-post":True, "hx-target":"closest fieldset"})}}
             {{subfield.label(class="form-check-label")}}
             {% if loop.last %}
-            {% include "htmx_components_flask/form/errors.html"%}
-            {% include "htmx_components_flask/form/description.html"%}
+            {% include "errors.html"%}
+            {% include "description.html"%}
             {% endif %}
         </div>
         {% endfor%}
@@ -72,8 +72,8 @@
         {% endif %}
         {{field(**{"class":css~valid_css, "hx-target":"closest div", "hx-post":true})}}
 
-        {% include "htmx_components_flask/form/errors.html"%}
-        {% include "htmx_components_flask/form/description.html"%}
+        {% include "errors.html"%}
+        {% include "description.html"%}
     </div>
 {% endif %}
 

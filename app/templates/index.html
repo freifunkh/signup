@@ -12,6 +12,12 @@
             font-size: 1.2em;
             line-height: 1.6em;
         }
+        #loading{
+        display:none;
+        }
+        .htmx-request#loading {
+            display:inline-block;
+        }
     </style>
 </head>
 
@@ -23,8 +29,8 @@
         <h1 style="margin-top: 30px;">LeineLab e.V. - Mitgliedsantrag</h1>
             {% from "form.html" import render_field with context %}
 
-
-            <form method="post" hx-swap="outerHTML" id="{{form._prefix}}form" hx-post novalidate hx-indicator="#spinner" encoding="{{encoding}}">
+            {% block content %}
+            <form method="post" hx-indicator="#loading" hx-swap="outerHTML" id="{{form._prefix}}form" hx-post novalidate encoding="{{encoding}}">
 
                 <h3 style="padding-top:30px">Basisdaten</h3>
 
@@ -53,7 +59,7 @@
                     <div class="alert alert-info" role="alert">
                         Hinweis: Falls du den angezeigten Beitrag aus finanziellen Gründen trotz Ermäßigung immer
                         noch nicht aufbringen kannst, sprich uns als Vorstand gerne an. Wir haben
-                        nach der Beitragsordnung die Möglichkeit, weitere individuelle Vergünstigungen
+                        nach der Beitragsordnung die Möglichkeit, weitere individuelle Vergünstigungenhx-indicator="#spinner" 
                         für Sonderfälle zu vergeben.
                     </div>
                     {% endif %}
@@ -90,11 +96,13 @@
                 <h3 style="padding-top:30px">Datenschutz</h3>
 
                 {{ render_field(form.datenschutz) }}
-                
 
-                <button type="submit" class="btn btn-primary">Submit</button>
-
+                <button type="submit" class="btn btn-primary">
+                    <span id="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Submit
+                </button>
             </form>
+        {% endblock %}
     </div>
 </body>
 
