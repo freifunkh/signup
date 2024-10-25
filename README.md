@@ -1,6 +1,8 @@
 # Installation steps
 
-## Step 1 - Create config
+## Deployment
+
+### Step 1 - Create config
 
 ```
 cd app
@@ -9,8 +11,19 @@ vi config.py
 cd ../
 ```
 
-## Step 2 - Compose and run
+### Step 2 - Compose and run
 
 ```
 docker compose up -d
 ```
+
+## Development
+
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python run.py
+```
+
+Then go to http://localhost:8003/
