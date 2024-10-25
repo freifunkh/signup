@@ -63,7 +63,7 @@ class BaseForm(FlaskForm):
         validators.Length(min=6, message='Ein bisschen kurz für eine EMail-Adresse?'),
         validators.Email(message='Keine valide EMail-Adresse.')
     ])
-    mitgliedsart = RadioField('Mitgliedsart', default="Normale Mitgliedschaft", choices=["Normale Mitgliedschaft", "Fördermitgliedschaft (Kein Stimmrecht auf der Mitgliederversammlung, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)"])
+    mitgliedsart = RadioField('Mitgliedsart', default="Normale Mitgliedschaft", choices=["Normale Mitgliedschaft", "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)"])
 
     datenschutz = BooleanField("""Ich stimme zu, dass meine Stammdaten im 
         Rahmen der Datenschutzvereinbarung auf unserer Webseite verarbeitet
