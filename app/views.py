@@ -66,7 +66,7 @@ class BaseForm(FlaskForm):
     mitgliedsart = RadioField('Mitgliedsart', default="Normale Mitgliedschaft", choices=["Normale Mitgliedschaft", "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)"])
 
     datenschutz = BooleanField("""Ich stimme zu, dass meine Stammdaten im 
-        Rahmen der Datenschutzvereinbarung auf unserer Webseite verarbeitet
+        Rahmen der Datenschutzvereinbarung auf der Webseite des LeineLab e.V. verarbeitet
         werden.""", [InputRequired("Zustimmung ist erforderlich.")])
 
 def calc_beitrag(ermaessigt, werkstatt, foerderbeitrag=None):
