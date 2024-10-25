@@ -9,6 +9,8 @@
     <style>
         body {
             padding: 20px;
+            font-size: 1.2em;
+            line-height: 1.6em;
         }
     </style>
 </head>
@@ -16,17 +18,12 @@
 <body style="display:flex; justify-content : center;">
     <div style="max-width: 600px;">
         <h1>LeineLab e.V. - Mitgliedsantrag</h1>
-        <!-- <form hx-post="/" class="mb-3" hx-target="#frm" id="frm" hx-swap="outerHTML"> -->
-            <!-- {{ form.csrf_token }} -->
-
-            <h2>Basisdaten</h2>
-
-            {# include "form.html" #}
-
             {% from "form.html" import render_field with context %}
 
 
             <form method="post" hx-swap="outerHTML" id="{{form._prefix}}form" hx-post novalidate hx-indicator="#spinner" encoding="{{encoding}}">
+
+                <h3 style="padding-top:30px">Basisdaten</h3>
 
                 {{ form.csrf_token }}
 
@@ -45,16 +42,25 @@
                 {{ render_field(form.email) }}
 
                 <div id="x2" hx-post="" hx-trigger="change{{ ',load' | safe if "HX-Request" not in request.headers }}">
-                    <h5 id="beitrag" hx-post="" hx-trigger="input from:#x2">
-                        Dein Beitrag: <br><span class="badge rounded-pill bg-primary">
+                    <h3 style="padding-top:30px" id="beitrag" hx-post="" hx-trigger="input from:#x2">
+                        Dein Beitrag: <span class="badge rounded-pill bg-primary">
                         <span id="beitrag">{{ beitrag }}</span> € / Monat</span>
-                    </h5>
+                    </h3>
+                    {% if request.form['x-ermaessigt'] %}
+                    <div class="alert alert-info" role="alert">
+                        Hinweis: Falls du den angezeigten Beitrag aus finanziellen Gründen trotz Ermäßigung immer
+                        noch nicht aufbringen kannst, sprich uns als Vorstand gerne an. Wir haben
+                        nach der Beitragsordnung die Möglichkeit, weitere individuelle Vergünstigungen
+                        für Sonderfälle zu vergeben.
+                    </div>
+                    {% endif %}
                 
                     {{ render_field(form.mitgliedsart, False) }}
                     {{ render_field(form.x, False) }}
+
                 </div>
 
-                <h4>Zahlungsdaten</h4>
+                <h3 style="padding-top:30px">Zahlungsdaten</h3>
 
                 <div id="sepa-dep" hx-post="" hx-trigger="change,input from:#name-outer{{ ',load' | safe if "HX-Request" not in request.headers }}">
                     {{ render_field(form.sepa.mitglied_is_inhabende, False)}}
@@ -64,11 +70,15 @@
 
                 {{ render_field(form.sepa.iban) }}
                 {{ render_field(form.sepa.kreditinstitut) }}
-
-
                 {{ render_field(form.sepa.einwilligung) }}
 
-                <h4>Datenschutz</h4>
+                <em>Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten
+                    Betrags verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen. Die Behandlung
+                    von nicht eingelöste Lastschriften und die damit verbundenen Kosten werden in der Gebührenordnung des
+                    LeineLab e.V. geregelt. Sofern nicht anders vereinbart, werden die Mitgliedsbeiträge in einer
+                    jährlichen Sammelbuchung eingezogen.</em>
+
+                <h3 style="padding-top:30px">Datenschutz</h3>
 
                 {{ render_field(form.datenschutz) }}
                 

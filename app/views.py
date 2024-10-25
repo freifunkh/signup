@@ -14,7 +14,6 @@ def iban_validator(form, field):
     except ValueError:
         raise ValidationError('Ungültige IBAN.')
 
-
 parser = etree.HTMLParser(encoding="utf-8")
 
 @app.after_request
@@ -51,7 +50,7 @@ class SEPABase(FlaskForm):
     kreditinstitut = StringField('Kreditinstitut', [Length(min=3, message="Der Name des Kreditinstituts sollte mindestens 3 Zeichen haben.")])
 
 class SEPASameInhabende(SEPABase):
-    kontoinhabende = StringField('Kontoinhabende Person(en)', render_kw={"disabled": ""})
+    kontoinhabende = StringField('Kontoinhabende Person', render_kw={"disabled": ""})
     kontoinhabende_addresse = StringField('Addresse (Straße Hausnummer, PLZ Stadt)', render_kw={"disabled": ""})
 
 class SEPAAbweichendeInhabende(SEPABase):
@@ -142,26 +141,6 @@ def home():
         if "HX-Request" not in request.headers:
             return redirect('/success')
 
-    b = beitrag()
-    return render_template("index.html", form=form, beitrag=b)
-
-@app.route("/beitragstuff", methods=["POST"])
-def beitragsstuff():
-    b = beitrag()
-
-    return render_template(
-        "partials/beitragsstuff.html",
-        form=request.form,
-        beitrag=b)
-
-@app.route("/sepa", methods=["POST"])
-def sepa():
-    return render_template(
-        "partials/sepa.html",
-        form=request.form)
-
-@app.route("/beitrag", methods=["POST"])
-def beitrag():
     foerderbeitrag = None
     werkstatt = request.form.get("x-werkstatt")
     ermaessigt = request.form.get("x-ermaessigt")
@@ -169,7 +148,10 @@ def beitrag():
     if request.form.get("mitgliedsart") == "Fördermitgliedschaft (Kein Stimmrecht auf der Mitgliederversammlung, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)":
         foerderbeitrag = request.form.get("x-foerderbeitrag", 10)
 
-    return calc_beitrag(ermaessigt, werkstatt, foerderbeitrag)
+    beitrag = calc_beitrag(ermaessigt, werkstatt, foerderbeitrag)
+
+    return render_template("index.html", form=form, beitrag=beitrag)
+
 
 @app.route("/submit", methods=["POST"])
 def submit():
