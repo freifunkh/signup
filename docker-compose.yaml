@@ -9,4 +9,5 @@ services:
     environment:
       FLASK_ENV: development
       FLASK_APP: app  # Setzt das Flask App-Modul
+    restart: always
 
