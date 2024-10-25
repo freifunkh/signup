@@ -16,45 +16,66 @@
 <body style="display:flex; justify-content : center;">
     <div style="max-width: 600px;">
         <h1>LeineLab e.V. - Mitgliedsantrag</h1>
-        <form hx-post="/submit" class="mb-3">
+        <!-- <form hx-post="/" class="mb-3" hx-target="#frm" id="frm" hx-swap="outerHTML"> -->
+            <!-- {{ form.csrf_token }} -->
+
             <h2>Basisdaten</h2>
 
-            <input type="text" placeholder="Name" name="name" class="form-control mb-3" hx-post="/sepa" hx-target="#sepa" />
-            <input type="text" placeholder="Anschrift (Straße, Hausnummer, PLZ, Ort)" name="anschrift" class="form-control mb-3" hx-post="/sepa" hx-target="#sepa"  />
-            <input type="text" placeholder="EMail" name="email" class="form-control mb-3" />
+            {# include "form.html" #}
 
-            <h2>Art der Mitgliedschaft</h2>
-
-            <div id="beitragstuff" hx-post="/beitragstuff" hx-trigger="load">
-            </div>
-
-            <h2>Zahlungsdaten</h2>
-            <div id="sepa" hx-post="/sepa" hx-trigger="load"></div>
+            {% from "form.html" import render_field with context %}
 
 
-            <h2>Datenschutz</h2>
+            <form method="post" hx-swap="outerHTML" id="{{form._prefix}}form" hx-post novalidate hx-indicator="#spinner" encoding="{{encoding}}">
 
-            <div class="form-check">
-                <input class="form-check-input is-invalid" type="checkbox" name="datenschutz" value="true" id="datenschutz" required>
-                <label class="form-check-label" for="datenschutz">
-                    Ich stimme zu, dass meine Stammdaten im Rahmen der Datenschutzvereinbarung auf unserer Webseite verarbeitet werden.
-                </label>
-                <div id="invalidCheck3Feedback" class="invalid-feedback" aria-describedby="invalidCheck3Feedback">
-                    Du musst zustimmen, um das Formular abzusenden.
+                {{ form.csrf_token }}
+
+                {% if form.form_errors %}
+                <div class="alert alert-danger" role="alert"><ul>
+                {% for error in form.form_errors %}
+                <li>{{error}}</li>
+                {% endfor %}
+                </ul></div>
+                {% endif %}
+
+                <div id="name-outer">
+                {{ render_field(form.name) }}
+                {{ render_field(form.full_address) }}
                 </div>
-            </div>
+                {{ render_field(form.email) }}
 
-            <h2>Sonstiges</h2>
+                <div id="x2" hx-post="" hx-trigger="change{{ ',load' | safe if "HX-Request" not in request.headers }}">
+                    <h5 id="beitrag" hx-post="" hx-trigger="input from:#x2">
+                        Dein Beitrag: <br><span class="badge rounded-pill bg-primary">
+                        <span id="beitrag">{{ beitrag }}</span> € / Monat</span>
+                    </h5>
+                
+                    {{ render_field(form.mitgliedsart, False) }}
+                    {{ render_field(form.x, False) }}
+                </div>
 
-            <div class="form-floating">
-                <textarea class="form-control" placeholder="Hier ist Platz für Anmerkungen oder Fragen" id="anmerkungen" style="height: 100px"></textarea>
-                <label for="anmerkungen">Hier ist Platz für Anmerkungen oder Fragen</label>
-            </div>
+                <h4>Zahlungsdaten</h4>
 
-            <br>
+                <div id="sepa-dep" hx-post="" hx-trigger="change,input from:#name-outer{{ ',load' | safe if "HX-Request" not in request.headers }}">
+                    {{ render_field(form.sepa.mitglied_is_inhabende, False)}}
+                    {{ render_field(form.sepa.kontoinhabende) }}
+                    {{ render_field(form.sepa.kontoinhabende_addresse) }}
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                {{ render_field(form.sepa.iban) }}
+                {{ render_field(form.sepa.kreditinstitut) }}
+
+
+                {{ render_field(form.sepa.einwilligung) }}
+
+                <h4>Datenschutz</h4>
+
+                {{ render_field(form.datenschutz) }}
+                
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+            </form>
     </div>
 </body>
 

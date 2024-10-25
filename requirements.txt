@@ -1,1 +1,7 @@
-flask gunicorn
+flask
+gunicorn
+Flask-WTF
+lxml
+email_validator
+htmx-components-flask
+schwifty
