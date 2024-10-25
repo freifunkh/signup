@@ -21,7 +21,7 @@ class NormalesMitgliedForm(FlaskForm):
     ermaessigt = BooleanField("""Ermäßigter Beitrag %TAG% - Für Schüler*innen, Studierende,
             Auszubildende, Empfänger*innen
             von Sozial- oder Bürgergeld einschließlich Leistungen nach § 22 ohne
-            Zuschläge oder nach § 24 des zweiten Sozialgesetzbuchs (SGB II), sowie
+            Zuschläge oder nach § 24 des zweiten Sozialgesetzbuchs (SGB II) sowie
             Empfänger*innen von Ausbildungsförderung nach dem
             Bundesausbildungsförderungsgesetz (BAföG)""")
     werkstatt = BooleanField("Werkstattnutzung %TAG%")
