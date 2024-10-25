@@ -89,7 +89,7 @@ def calc_beitrag(ermaessigt, werkstatt, foerderbeitrag=None):
 def home():
     xCls = NormalesMitgliedForm
 
-    if request.form.get('mitgliedsart') == "Fördermitgliedschaft (Kein Stimmrecht auf der Mitgliederversammlung, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)":
+    if request.form.get('mitgliedsart') == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)":
         #form = BaseFormFoerderMitglied()
         xCls = FoerderMitgliedForm
 
@@ -128,7 +128,7 @@ def home():
     werkstatt = request.form.get("x-werkstatt")
     ermaessigt = request.form.get("x-ermaessigt")
 
-    if request.form.get("mitgliedsart") == "Fördermitgliedschaft (Kein Stimmrecht auf der Mitgliederversammlung, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)":
+    if request.form.get("mitgliedsart") == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)":
         foerderbeitrag = request.form.get("x-foerderbeitrag", 10)
 
     beitrag = calc_beitrag(ermaessigt, werkstatt, foerderbeitrag)

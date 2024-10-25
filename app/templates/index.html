@@ -71,7 +71,7 @@
                     </div>
 
                     <div id="mitgliedsart-dependent" hx-post="" hx-trigger="change from:#mitgliedsart-outer">
-                        {% if request.form['mitgliedsart'] == "Fördermitgliedschaft (Kein Stimmrecht auf der Mitgliederversammlung, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)" %}
+                        {% if request.form['mitgliedsart'] == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)" %}
                             {{ render_field(form.x.foerderbeitrag, False, False) }}
                         {% else %}
                             <div id="ermaessigt-werkstatt" hx-post="" hx-trigger="change">
