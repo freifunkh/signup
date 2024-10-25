@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./app/config.py:/app/app/config.py:ro  # Die lokale config.py in den Container mounten
+    environment:
+      FLASK_ENV: development
+      FLASK_APP: app  # Setzt das Flask App-Modul
+
