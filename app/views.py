@@ -28,7 +28,7 @@ class NormalesMitgliedForm(FlaskForm):
 
 class SEPABase(FlaskForm):
     mitglied_is_inhabende = BooleanField("Mitglied ist kontoinhabende Person?", default="checked")
-    einwilligung = BooleanField("""Hiermit ermächtige ich den LeineLab e.V. Zahlungen von
+    einwilligung = BooleanField("""Hiermit ermächtige ich den LeineLab e.V., wiederkehrende Zahlungen von
         meinem Konto mittels Lastschrift einzuziehen. Zugleich weise ich mein Kreditinstitut an,
         die vom LeineLab e.V. auf mein Konto gezogenen Lastschriften einzulösen.
         """, [validators.InputRequired("Zustimmung ist erforderlich.")])
