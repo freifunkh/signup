@@ -54,7 +54,7 @@
                         für Sonderfälle zu vergeben.
                     </div>
                     {% endif %}
-                
+
                     {{ render_field(form.mitgliedsart, False) }}
                     {{ render_field(form.x, False) }}
 
@@ -72,11 +72,17 @@
                 {{ render_field(form.sepa.kreditinstitut) }}
                 {{ render_field(form.sepa.einwilligung) }}
 
-                <em>Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten
-                    Betrags verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen. Die Behandlung
-                    von nicht eingelöste Lastschriften und die damit verbundenen Kosten werden in der Gebührenordnung des
-                    LeineLab e.V. geregelt. Sofern nicht anders vereinbart, werden die Mitgliedsbeiträge in einer
-                    jährlichen Sammelbuchung eingezogen.</em>
+                <div class="alert alert-info" role="alert">
+                    Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten
+                    Betrags verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.
+                </div>
+                <div class="alert alert-info" role="alert">
+                    Die Behandlung von nicht eingelösten Lastschriften und die damit verbundenen Kosten werden in der Gebührenordnung des
+                    LeineLab&nbsp;e.V. geregelt.
+                </div>
+                <div class="alert alert-info" role="alert">
+                    Sofern nicht anders vereinbart, werden die Mitgliedsbeiträge in einer jährlichen Sammelbuchung eingezogen.
+                </div>
 
                 <h3 style="padding-top:30px">Datenschutz</h3>
 
