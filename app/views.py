@@ -20,7 +20,7 @@ parser = etree.HTMLParser(encoding="utf-8")
 class NormalesMitgliedForm(FlaskForm):
     ermaessigt = BooleanField("""Ermäßigter Beitrag %TAG% - Für Schülerinnen/Schüler, Studierende,
             Auszubildende, Empfängerinnen/Empfänger
-            von Sozialgeld oder Arbeitslosengeld II einschließlich Leistungen nach § 22 ohne
+            von Sozialgeld oder Bürgergeld einschließlich Leistungen nach § 22 ohne
             Zuschläge oder nach § 24 des Zweiten Buchs des Sozialgesetzbuchs (SGB II), sowie
             Empfängerinnen/Empfänger von Ausbildungsförderung nach dem
             Bundesausbildungsförderungsgesetz (BAföG)""")
