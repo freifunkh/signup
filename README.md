@@ -14,7 +14,7 @@ cd ../
 ### Step 2 - Compose and run
 
 ```
-docker compose up -d
+docker compose up -d --build
 ```
 
 ## Development
