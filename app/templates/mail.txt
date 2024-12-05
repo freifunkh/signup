@@ -17,6 +17,9 @@ Kontoinhabende Person(en): {{ request.form['sepa-kontoinhabende'] }}
 Addresse der kontoinhabende(n) Person(en): {{ request.form['sepa-kontoinhabende_addresse'] }}
 Kreditinstitut: {{ request.form['sepa-kreditinstitut'] }}
 IBAN: {{ request.form['sepa-iban'] }}
+Ermächtigung SEPA-Einzug: Ja
+
+Zustimmung Datenschutz: Ja
 
 Viele Grüße und Tüdelü
 Euer Mitgliedsformular
