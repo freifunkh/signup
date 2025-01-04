@@ -1,16 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
     <title>FNorden e.V. - Mitgliedsantrag</title>
-    <link href="https://fnorden.net/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FNorden CSS -->
+    <link href="https://fnorden.net/css/style.css" rel="stylesheet" />
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://fnorden.net/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="https://fnorden.net/css/grayscale.css" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link
+        href="https://fnorden.net/vendor/font-awesome/css/all.min.css"
+        rel="stylesheet"
+        type="text/css"
+    />
+    <link
+        href="https://fnorden.net/vendor/@fontsource/lora/400_700_400italic_700italic.css"
+        rel="stylesheet"
+        type="text/css"
+    />
+    <link
+        href="https://fnorden.net/vendor/@fontsource/montserrat/400_700.css"
+        rel="stylesheet"
+        type="text/css"
+    />
+
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.5.0"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logo_mini_inverted.png')}}">
     <style>
-        body {
-            padding: 20px;
-        }
         #loading{
             display:none;
         }
@@ -20,86 +47,165 @@
     </style>
 </head>
 
-<body style="display:flex; justify-content : center;">
-    <div style="max-width: 600px;">
-        <div style="text-align: center;">
+<body id="page-top" data-bs-spy="scroll" data-bs-target=".fixed-top">
+    <!-- Intro Header -->
+    <header class="intro">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7 offset-md-5 offset-sm-0 col-md-12">
+                        <img src="https://fnorden.net/img/logo_intro.png" />
+                        <p class="intro-text">
+                            Förderverein freier Netzwerke im Norden.
+                        </p>
+                        <a href="#membership" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h1 style="margin-top: 30px;">FNorden e.V. - Mitgliedsantrag</h1>
-            {% from "form.html" import render_field with context %}
+    </header>
 
-            {% block content %}
-            <form method="post" hx-indicator="#loading" hx-swap="outerHTML" id="{{form._prefix}}form" hx-post novalidate encoding="{{encoding}}">
 
-                <h3 style="padding-top:30px">Stammdaten</h3>
+    <!-- Navigation -->
+    <nav class="navbar navbar-custom navbar-expand-md" role="navigation">
+        <div class="container">
+            <button
+                type="button"
+                class="navbar-toggler"
+                data-bs-toggle="collapse"
+                data-bs-target=".navbar-main-collapse"
+            >
+                <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">
+                <img src="https://fnorden.net/img/logo_mini.png" />
+                <span class="light">F</span>Norden e.V.
+            </a>
 
-                {{ form.csrf_token }}
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-main-collapse">
+                <ul class="nav navbar-nav ms-auto">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden nav-item">
+                        <a
+                            href="#page-top"
+                            class="page-scroll nav-link"
+                        ></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="page-scroll nav-link" href="https://fnorden.net/"
+                            >zurück zur Übersicht</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="page-scroll nav-link" href="#membership"
+                            >Mitgliedsantrag</a
+                        >
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <section id="membership" class="container content-section text-left">
+        <div class="row">
+            <div class="col-xl-8 offset-lg-2">
+                <h1 style="margin-top: 30px;">FNorden e.V. - Mitgliedsantrag</h1>
+                {% from "form.html" import render_field with context %}
 
-                {% if form.form_errors %}
-                <div class="alert alert-danger" role="alert"><ul>
-                {% for error in form.form_errors %}
-                <li>{{error}}</li>
-                {% endfor %}
-                </ul></div>
-                {% endif %}
+                {% block content %}
+                <form method="post" hx-indicator="#loading" hx-swap="outerHTML" id="{{form._prefix}}form" hx-post novalidate encoding="{{encoding}}">
 
-                <div id="name-outer">
-                {{ render_field(form.name) }}
-                {{ render_field(form.full_address) }}
-                </div>
-                {{ render_field(form.email) }}
+                    <h3 style="padding-top:30px">Stammdaten</h3>
 
-                <div id="x2" {{ 'hx-post="" hx-trigger="load"' | safe if "HX-Request" not in request.headers }}>
-                    <h3 style="padding-top:30px" id="beitrag" hx-post="" hx-trigger="input from:#x2 queue:last,change from:#x2 queue:last">
-                        Dein Beitrag: <span class="badge rounded-pill bg-primary">
-                        <span id="beitrag">{{ beitrag }}</span> € / Monat</span>
-                    </h3>
+                    {{ form.csrf_token }}
+
+                    {% if form.form_errors %}
+                    <div class="alert alert-danger" role="alert"><ul>
+                    {% for error in form.form_errors %}
+                    <li>{{error}}</li>
+                    {% endfor %}
+                    </ul></div>
+                    {% endif %}
+
+                    <div id="name-outer">
+                    {{ render_field(form.name) }}
+                    {{ render_field(form.full_address) }}
+                    </div>
+                    {{ render_field(form.email) }}
+
+                    <div id="x2" {{ 'hx-post="" hx-trigger="load"' | safe if "HX-Request" not in request.headers }}>
+                        <h3 style="padding-top:30px" id="beitrag" hx-post="" hx-trigger="input from:#x2 queue:last,change from:#x2 queue:last">
+                            Dein Beitrag: <span class="badge rounded-pill bg-primary">
+                            <span id="beitrag">{{ beitrag }}</span> € / Monat</span>
+                        </h3>
+                        <div class="alert alert-info" role="alert">
+                            Sofern nicht anders vereinbart, werden die Mitgliedsbeiträge in einer jährlichen Sammelbuchung eingezogen.
+                        </div>
+
+                        <div id="mitgliedsart-outer">
+                            {{ render_field(form.mitgliedsart, False) }}
+                        </div>
+
+                        <div id="mitgliedsart-dependent" hx-post="" hx-trigger="change from:#mitgliedsart-outer">
+                            {% if request.form['mitgliedsart'] == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)" %}
+                                {{ render_field(form.x.foerderbeitrag, False, False) }}
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    <h3 style="padding-top:30px">Zahlungsdaten</h3>
+
+                    <div id="sepa-dep" hx-post="" hx-trigger="change,input from:#name-outer{{ ',load' | safe if "HX-Request" not in request.headers }}">
+                        {{ render_field(form.sepa.mitglied_is_inhabende, False)}}
+                        {{ render_field(form.sepa.kontoinhabende) }}
+                        {{ render_field(form.sepa.kontoinhabende_addresse) }}
+                    </div>
+
+                    {{ render_field(form.sepa.iban) }}
+                    {{ render_field(form.sepa.kreditinstitut) }}
+                    {{ render_field(form.sepa.einwilligung) }}
+
                     <div class="alert alert-info" role="alert">
-                        Sofern nicht anders vereinbart, werden die Mitgliedsbeiträge in einer jährlichen Sammelbuchung eingezogen.
+                        Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten
+                        Betrags verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                        Gläuber-Identifikationsnummer des FNorden e.V.: DE-FIXME-Aiyion.
                     </div>
 
-                    <div id="mitgliedsart-outer">
-                        {{ render_field(form.mitgliedsart, False) }}
-                    </div>
+                    <h3 style="padding-top:30px">Datenschutz</h3>
 
-                    <div id="mitgliedsart-dependent" hx-post="" hx-trigger="change from:#mitgliedsart-outer">
-                        {% if request.form['mitgliedsart'] == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)" %}
-                            {{ render_field(form.x.foerderbeitrag, False, False) }}
-                        {% endif %}
-                    </div>
+                    {{ render_field(form.datenschutz) }}
 
-                </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span id="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Mitgliedschaft beantragen
+                    </button>
+                </form>
+                {% endblock %}
+            </div>
+        </div>
+    </section>
+                <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>
+                <a href="https://fnorden.net/about.html">Haftungsausschluss</a> | Copyright
+                &copy; <span class="light">F</span>Norden - 2024
+            </p>
+        </div>
+    </footer>
 
-                <h3 style="padding-top:30px">Zahlungsdaten</h3>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://fnorden.net/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-                <div id="sepa-dep" hx-post="" hx-trigger="change,input from:#name-outer{{ ',load' | safe if "HX-Request" not in request.headers }}">
-                    {{ render_field(form.sepa.mitglied_is_inhabende, False)}}
-                    {{ render_field(form.sepa.kontoinhabende) }}
-                    {{ render_field(form.sepa.kontoinhabende_addresse) }}
-                </div>
-
-                {{ render_field(form.sepa.iban) }}
-                {{ render_field(form.sepa.kreditinstitut) }}
-                {{ render_field(form.sepa.einwilligung) }}
-
-                <div class="alert alert-info" role="alert">
-                    Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten
-                    Betrags verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.
-                </div>
-                <div class="alert alert-light" role="alert">
-                    Gläuber-Identifikationsnummer des FNorden e.V.: DE-FIXME-Aiyion.
-                </div>
-
-                <h3 style="padding-top:30px">Datenschutz</h3>
-
-                {{ render_field(form.datenschutz) }}
-
-                <button type="submit" class="btn btn-primary">
-                    <span id="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    Mitgliedschaft beantragen
-                </button>
-            </form>
-        {% endblock %}
-    </div>
+    <!-- Custom Theme JavaScript -->
+    <script src="https://fnorden.net/js/grayscale.js"></script>
 </body>
 
 </html>
