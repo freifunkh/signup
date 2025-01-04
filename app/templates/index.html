@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>LeineLab e.V. - Mitgliedsantrag</title>
+    <title>FNorden e.V. - Mitgliedsantrag</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.5.0"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='leinelab0.png')}}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logo_mini_inverted.png')}}">
     <style>
         body {
             padding: 20px;
@@ -24,15 +24,14 @@
 <body style="display:flex; justify-content : center;">
     <div style="max-width: 600px;">
         <div style="text-align: center;">
-        <img src="{{ url_for('static', filename='leinelab0.png')}}" width="300" alt="LeineLab Logo - An den Glider aus Game of Life angelehntes L auf regenbogenfarbenem Hintergrund.">
         </div>
-        <h1 style="margin-top: 30px;">LeineLab e.V. - Mitgliedsantrag</h1>
+        <h1 style="margin-top: 30px;">FNorden e.V. - Mitgliedsantrag</h1>
             {% from "form.html" import render_field with context %}
 
             {% block content %}
             <form method="post" hx-indicator="#loading" hx-swap="outerHTML" id="{{form._prefix}}form" hx-post novalidate encoding="{{encoding}}">
 
-                <h3 style="padding-top:30px">Basisdaten</h3>
+                <h3 style="padding-top:30px">Stammdaten</h3>
 
                 {{ form.csrf_token }}
 
@@ -58,29 +57,14 @@
                     <div class="alert alert-info" role="alert">
                         Sofern nicht anders vereinbart, werden die Mitgliedsbeiträge in einer jährlichen Sammelbuchung eingezogen.
                     </div>
-                    <div id="ermaessigt-hinweis" hx-post="" hx-trigger="input from:#x2">
-                    {% if request.form['x-ermaessigt'] %}
-                        <div class="alert alert-info" role="alert">
-                            Hinweis: Falls du den angezeigten Beitrag aus finanziellen Gründen trotz Ermäßigung immer
-                            noch nicht aufbringen kannst, sprich uns als Vorstand gerne an. Wir haben
-                            nach der Beitragsordnung die Möglichkeit, weitere individuelle Vergünstigungen
-                            für Sonderfälle zu vergeben.
-                        </div>
-                    {% endif %}
-                    </div>
 
                     <div id="mitgliedsart-outer">
                         {{ render_field(form.mitgliedsart, False) }}
                     </div>
 
                     <div id="mitgliedsart-dependent" hx-post="" hx-trigger="change from:#mitgliedsart-outer">
-                        {% if request.form['mitgliedsart'] == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)" %}
+                        {% if request.form['mitgliedsart'] == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)" %}
                             {{ render_field(form.x.foerderbeitrag, False, False) }}
-                        {% else %}
-                            <div id="ermaessigt-werkstatt" hx-post="" hx-trigger="change">
-                                {{ render_field(form.x.ermaessigt, False, False) }}
-                                {{ render_field(form.x.werkstatt, False, False) }}
-                            </div>
                         {% endif %}
                     </div>
 
@@ -102,12 +86,8 @@
                     Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten
                     Betrags verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.
                 </div>
-                <div class="alert alert-info" role="alert">
-                    Die Behandlung von nicht eingelösten Lastschriften und die damit verbundenen Kosten werden in der Gebührenordnung des
-                    LeineLab&nbsp;e.V. geregelt.
-                </div>
                 <div class="alert alert-light" role="alert">
-                    Gläuber-Identifikationsnummer des LeineLab e.V.: DE86MEM00002676494.
+                    Gläuber-Identifikationsnummer des FNorden e.V.: DE-FIXME-Aiyion.
                 </div>
 
                 <h3 style="padding-top:30px">Datenschutz</h3>

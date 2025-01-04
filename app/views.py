@@ -18,19 +18,13 @@ def iban_validator(form, field):
 parser = etree.HTMLParser(encoding="utf-8")
 
 class NormalesMitgliedForm(FlaskForm):
-    ermaessigt = BooleanField("""Ermäßigter Beitrag %TAG% - Für Schüler*innen, Studierende,
-            Auszubildende, Empfänger*innen
-            von Sozial- oder Bürgergeld einschließlich Leistungen nach § 22 ohne
-            Zuschläge oder nach § 24 des zweiten Sozialgesetzbuchs (SGB II) sowie
-            Empfänger*innen von Ausbildungsförderung nach dem
-            Bundesausbildungsförderungsgesetz (BAföG)""")
-    werkstatt = BooleanField("Werkstattnutzung %TAG%")
+    pass
 
 class SEPABase(FlaskForm):
     mitglied_is_inhabende = BooleanField("Mitglied ist kontoinhabende Person", default="checked")
-    einwilligung = BooleanField("""Hiermit ermächtige ich den LeineLab e.V., wiederkehrende Zahlungen von
+    einwilligung = BooleanField("""Hiermit ermächtige ich den FNorden e.V., wiederkehrende Zahlungen von
         meinem Konto mittels Lastschrift einzuziehen. Zugleich weise ich mein Kreditinstitut an,
-        die vom LeineLab e.V. auf mein Konto gezogenen Lastschriften einzulösen.
+        die vom FNorden e.V. auf mein Konto gezogenen Lastschriften einzulösen.
         """, [validators.InputRequired("Zustimmung ist erforderlich.")])
     iban = StringField('IBAN', [iban_validator])
     kreditinstitut = StringField('Kreditinstitut', [Length(min=3, message="Der Name des Kreditinstituts sollte mindestens 3 Zeichen haben.")])
@@ -49,7 +43,7 @@ class SEPAAbweichendeInhabende(SEPABase):
     ])
 
 class FoerderMitgliedForm(FlaskForm):
-    foerderbeitrag = DecimalRangeField("", default=10, render_kw={"min": 2.5, "step": 2.5, "max": 30})
+    foerderbeitrag = DecimalRangeField("", default=10, render_kw={"min": 5, "step": 2.5, "max": 30})
 
 class BaseForm(FlaskForm):
     name = StringField('Name', validators=[
@@ -63,33 +57,22 @@ class BaseForm(FlaskForm):
         validators.Length(min=6, message='Ein bisschen kurz für eine EMail-Adresse?'),
         validators.Email(message='Keine valide EMail-Adresse.')
     ])
-    mitgliedsart = RadioField('Mitgliedsart', default="Normale Mitgliedschaft", choices=["Normale Mitgliedschaft", "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)"])
+    mitgliedsart = RadioField('Mitgliedsart', default="Normale Mitgliedschaft", choices=["Normale Mitgliedschaft", "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)"])
 
     datenschutz = BooleanField("""Ich stimme zu, dass meine Stammdaten im 
-        Rahmen der Datenschutzvereinbarung auf der Webseite des LeineLab e.V. verarbeitet
+        Rahmen der Datenschutzvereinbarung auf der Webseite des FNorden e.V. verarbeitet
         werden.""", [InputRequired("Zustimmung ist erforderlich.")])
 
-def calc_beitrag(ermaessigt, werkstatt, foerderbeitrag=None):
+def calc_beitrag(foerderbeitrag=None):
     if foerderbeitrag:
         return foerderbeitrag
-
-    if ermaessigt:
-        if werkstatt:
-            return 10
-        else:
-            return 2.5
-    else:
-        if werkstatt:
-            return 28
-        else:
-            return 10
-
+    return 5.0
 
 @app.route("/", methods=["GET", "POST"])
 def home():
     xCls = NormalesMitgliedForm
 
-    if request.form.get('mitgliedsart') == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)":
+    if request.form.get('mitgliedsart') == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)":
         #form = BaseFormFoerderMitglied()
         xCls = FoerderMitgliedForm
 
@@ -103,38 +86,20 @@ def home():
 
     form = MyForm()
 
-    if xCls == NormalesMitgliedForm:
-        ermaessigt = form.x.ermaessigt.data
-        werkstatt = form.x.werkstatt.data
-
-        tag = ''
-        if not ermaessigt:
-            tag = '<span class="badge rounded-pill bg-success">%.2f €</span>' % (calc_beitrag(True, werkstatt)-calc_beitrag(False, werkstatt))
-        
-        form.x.ermaessigt.label.text = form.x.ermaessigt.label.text.replace("%TAG%", tag)
-
-        tag = ''
-        if not werkstatt:
-            tag = '<span class="badge rounded-pill bg-info text-dark">%+.2f €</span>' % (calc_beitrag(ermaessigt, True)-calc_beitrag(ermaessigt, False))
-        
-        form.x.werkstatt.label.text = form.x.werkstatt.label.text.replace("%TAG%", tag)
-
     if sepaCls == SEPASameInhabende:
         form.sepa.kontoinhabende.process_data(form.data['name'])
         form.sepa.kontoinhabende_addresse.process_data(form.data['full_address'])
 
 
     foerderbeitrag = None
-    werkstatt = request.form.get("x-werkstatt")
-    ermaessigt = request.form.get("x-ermaessigt")
 
-    if request.form.get("mitgliedsart") == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, keine Werkstattnutzung, keine Schließberechtigung, beliebiger Beitrag)":
+    if request.form.get("mitgliedsart") == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)":
         foerderbeitrag = request.form.get("x-foerderbeitrag", 10)
 
-    beitrag = calc_beitrag(ermaessigt, werkstatt, foerderbeitrag)
+    beitrag = calc_beitrag(foerderbeitrag)
 
     if form.validate_on_submit() and "HX-Target" in request.headers and request.headers['HX-Target'] == 'form':
-        msg = Message(subject=f'Neue Mitgliedsanfrage von {form.data["name"]}!', sender='root@leinelab.org', recipients=['vorstand@leinelab.org'])
+        msg = Message(subject=f'Neue Mitgliedsanfrage von {form.data["name"]}!', sender='jan-niklas@fnorden.de', recipients=['jan-niklas@fnorden.de'])
         msg.body = render_template("mail.txt", form=form, beitrag=beitrag)
         print(msg)
         mail.send(msg)
