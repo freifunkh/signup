@@ -57,7 +57,7 @@ class BaseForm(FlaskForm):
         validators.Length(min=6, message='Ein bisschen kurz für eine EMail-Adresse?'),
         validators.Email(message='Keine valide EMail-Adresse.')
     ])
-    mitgliedsart = RadioField('Mitgliedsart', default="Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)", choices=["Aktive Mitgliedschaft (fortwährende Teilnahme an Mitgliederversammlungen wird erwartet, um Stimmrecht auszuüben)", "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)"])
+    mitgliedsart = RadioField('Mitgliedsart', default="Fördermitgliedschaft (kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)", choices=["Aktive Mitgliedschaft (fortwährende Teilnahme an Mitgliederversammlungen wird erwartet, um Stimmrecht auszuüben)", "Fördermitgliedschaft (kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)"])
 
     datenschutz = BooleanField("""Ich stimme zu, dass meine Stammdaten im 
         Rahmen der Datenschutzvereinbarung auf der Webseite des FNorden e.V. verarbeitet
@@ -72,7 +72,7 @@ def calc_beitrag(foerderbeitrag=None):
 def home():
     xCls = AktivesMitgliedForm
 
-    if request.form.get('mitgliedsart') == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)":
+    if request.form.get('mitgliedsart') == "Fördermitgliedschaft (kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)":
         #form = BaseFormFoerderMitglied()
         xCls = FoerderMitgliedForm
 
@@ -93,7 +93,7 @@ def home():
 
     foerderbeitrag = None
 
-    if request.form.get("mitgliedsart") == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)":
+    if request.form.get("mitgliedsart") == "Fördermitgliedschaft (kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)":
         foerderbeitrag = request.form.get("x-foerderbeitrag", 10)
 
     beitrag = calc_beitrag(foerderbeitrag)
