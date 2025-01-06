@@ -151,7 +151,7 @@
                         </div>
 
                         <div id="mitgliedsart-dependent" hx-post="" hx-trigger="change from:#mitgliedsart-outer">
-                            {% if request.form['mitgliedsart'] == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)" %}
+                            {% if request.form['mitgliedsart'] == "Fördermitgliedschaft (kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)" %}
                                 {{ render_field(form.x.foerderbeitrag, False, False) }}
                             {% endif %}
                         </div>
