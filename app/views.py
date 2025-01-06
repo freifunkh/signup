@@ -99,7 +99,7 @@ def home():
     beitrag = calc_beitrag(foerderbeitrag)
 
     if form.validate_on_submit() and "HX-Target" in request.headers and request.headers['HX-Target'] == 'form':
-        msg = Message(subject=f'Neue Mitgliedsanfrage von {form.data["name"]}!', sender='jan-niklas@fnorden.de', recipients=['jan-niklas@fnorden.de'])
+        msg = Message(subject=f'Neue Mitgliedsanfrage von {form.data["name"]}!', sender='signup@fnorden.de', recipients=['vorstand@fnorden.de'])
         msg.body = render_template("mail.txt", form=form, beitrag=beitrag)
         print(msg)
         mail.send(msg)
