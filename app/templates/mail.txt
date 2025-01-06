@@ -8,7 +8,7 @@ Name: {{ request.form['name'] }}
 Addresse: {{ request.form['full_address'] }}
 EMail: {{ request.form['email'] }}
 
-Beitrag: {{ beitrag }} €/Monat
+Beitrag: {{ '%0.2f'| format(beitrag|float) }} €/Monat
 Mitgliedschaftsart: {{ request.form['mitgliedsart'] }}
 
 Kontoinhabende Person(en): {{ request.form['sepa-kontoinhabende'] }}
