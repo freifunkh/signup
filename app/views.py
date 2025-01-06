@@ -17,7 +17,7 @@ def iban_validator(form, field):
 
 parser = etree.HTMLParser(encoding="utf-8")
 
-class NormalesMitgliedForm(FlaskForm):
+class AktivesMitgliedForm(FlaskForm):
     pass
 
 class SEPABase(FlaskForm):
@@ -70,7 +70,7 @@ def calc_beitrag(foerderbeitrag=None):
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    xCls = NormalesMitgliedForm
+    xCls = AktivesMitgliedForm
 
     if request.form.get('mitgliedsart') == "Fördermitgliedschaft (Kein Stimmrecht auf Mitgliederversammlungen, beliebiger Beitrag)":
         #form = BaseFormFoerderMitglied()
