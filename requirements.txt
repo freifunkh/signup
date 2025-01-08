@@ -1,8 +1,8 @@
+email-validator
 flask
-gunicorn==23.0.0
-Flask-WTF
-lxml
-email_validator
-htmx-components-flask
-schwifty
 flask_mail
+flask-wtf
+gunicorn==23.0.0
+htmx-components-flask
+lxml
+schwifty
