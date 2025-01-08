@@ -25,3 +25,15 @@ jobs:
           context: .
           push: true
           tags: freifunkh/fnorden-membership-signup:latest
+
+      - name: pull the latest docker image
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY_GITHUB_ACTIONS_AUTO }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /opt/fnordensignup/
+            /usr/bin/docker compose pull
+            /usr/bin/docker compose up -d
