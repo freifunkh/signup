@@ -1,5 +1,5 @@
 flask
-gunicorn
+gunicorn==23.0.0
 Flask-WTF
 lxml
 email_validator
