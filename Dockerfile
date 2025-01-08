@@ -15,5 +15,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Quellcode in den Container kopieren
 COPY . .
 
-# Flask Server starten
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8003"]
+# Gunicorn Server starten
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8003", "app:app"]
